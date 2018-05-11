@@ -667,7 +667,7 @@ namespace UnityEditor.Experimental.AutoLOD
                     initialLODMaxPolyCount = maxPolyCount;
             }
 
-            // Max LOD
+            // LOD Offset
             {
                 EditorGUI.BeginChangeCheck();
                 float lodOffset = EditorGUILayout.Slider("LOD Offset", LODOffset, 0.01f, 0.99f);
