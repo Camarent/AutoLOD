@@ -10,5 +10,6 @@ namespace UnityEditor.Experimental.AutoLOD
         public string batcher;
         public int maxLODGenerated;
         public int initialLODMaxPolyCount;
+        public float LODOffset = 0.5f;
     }
 }

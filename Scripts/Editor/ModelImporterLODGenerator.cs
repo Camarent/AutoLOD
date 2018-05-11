@@ -17,6 +17,7 @@ namespace UnityEditor.Experimental.AutoLOD
         public static Type meshSimplifierType { set; get; }
         public static int maxLOD { set; get; }
         public static int initialLODMaxPolyCount { set; get; }
+        public static float LODOffset { set; get; }
 
         const HideFlags k_DefaultHideFlags = HideFlags.None;
 
@@ -240,7 +241,7 @@ namespace UnityEditor.Experimental.AutoLOD
                 {
                     var lod = new LOD();
                     lod.renderers = lodData[i];
-                    var screenPercentage = i == maxLODFound ? 0.01f : Mathf.Pow(0.5f, i + 1);
+                    var screenPercentage = i == maxLODFound ? 0.01f : Mathf.Pow(importSettings.LODOffset, i + 1);
 
                     // Use the model importer percentages if they exist
                     if (i < importerLODLevels.arraySize)

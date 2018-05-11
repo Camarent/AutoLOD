@@ -40,6 +40,10 @@ namespace UnityEditor.Experimental.AutoLOD
                 var maxPolyCount = EditorGUILayout.IntField("Initial LOD Max Poly Count", initialLODMaxPolyCountProperty.intValue);
                 if (EditorGUI.EndChangeCheck())
                     initialLODMaxPolyCountProperty.intValue = maxPolyCount;
+                EditorGUI.BeginChangeCheck();
+                var lodOffset = EditorGUILayout.Slider("Specify LOD Level Offset", property.FindPropertyRelative("LODOffset").floatValue, 0.01f, 0.99f);
+                if (EditorGUI.EndChangeCheck())
+                    property.FindPropertyRelative("LODOffset").floatValue = lodOffset;
             }
 
             EditorGUILayout.Space();

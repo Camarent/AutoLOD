@@ -27,6 +27,8 @@ namespace UnityEditor.Experimental.AutoLOD
         const int k_DefaultInitialLODMaxPolyCount = 500000;
         const string k_SceneLODEnabled = "AutoLOD.SceneLODEnabled";
         const string k_ShowVolumeBounds = "AutoLOD.ShowVolumeBounds";
+        const string k_LODOffset = "AutoLOD.LODOffset";
+        const float k_DefaultLODOffset= 0.5f;
 
         static int maxExecutionTime
         {
@@ -110,6 +112,16 @@ namespace UnityEditor.Experimental.AutoLOD
             get { return EditorPrefs.GetInt(k_InitialLODMaxPolyCount, k_DefaultInitialLODMaxPolyCount); }
         }
 
+        static float LODOffset
+        {
+            set
+            {
+                EditorPrefs.SetFloat(k_LODOffset, value);
+                UpdateDependencies();
+            }
+            get { return EditorPrefs.GetFloat(k_LODOffset, k_DefaultLODOffset); }
+        }
+
         static bool sceneLODEnabled
         {
             set
@@ -142,6 +154,7 @@ namespace UnityEditor.Experimental.AutoLOD
             LODDataEditor.batcher = batcherType.AssemblyQualifiedName;
             LODDataEditor.maxLODGenerated = maxLOD;
             LODDataEditor.initialLODMaxPolyCount = initialLODMaxPolyCount;
+            LODDataEditor.LODOffset = LODOffset;
 
             LODVolume.meshSimplifierType = meshSimplifierType;
             LODVolume.batcherType = batcherType;
@@ -151,6 +164,7 @@ namespace UnityEditor.Experimental.AutoLOD
             ModelImporterLODGenerator.maxLOD = maxLOD;
             ModelImporterLODGenerator.enabled = generateOnImport;
             ModelImporterLODGenerator.initialLODMaxPolyCount = initialLODMaxPolyCount;
+            ModelImporterLODGenerator.LODOffset = LODOffset;
 
             if (sceneLODEnabled && !SceneLOD.activated)
             {
@@ -651,6 +665,14 @@ namespace UnityEditor.Experimental.AutoLOD
                 var maxPolyCount = EditorGUILayout.IntField("Initial LOD Max Poly Count", initialLODMaxPolyCount);
                 if (EditorGUI.EndChangeCheck())
                     initialLODMaxPolyCount = maxPolyCount;
+            }
+
+            // Max LOD
+            {
+                EditorGUI.BeginChangeCheck();
+                float lodOffset = EditorGUILayout.Slider("LOD Offset", LODOffset, 0.01f, 0.99f);
+                if (EditorGUI.EndChangeCheck())
+                    LODOffset = lodOffset;
             }
 
             // Generate LODs on import
